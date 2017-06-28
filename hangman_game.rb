@@ -6,6 +6,7 @@ class Hangman
     @random_word = nil
     @user_guesses = []
     @guesses_left = 6
+    game_menu
   end
 
   def game_menu
@@ -113,5 +114,3 @@ class Hangman
 end
 
 hangman = Hangman.new
-
-hangman.game_menu
