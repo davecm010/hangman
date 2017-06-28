@@ -14,9 +14,9 @@ class Hangman
     puts %{
               HANGMAN
 
-       - Type 'n' for NEW GAME
-       - Type 'l' for LOAD GAME
-       - Type 'q' to QUIT
+          'n' --- NEW GAME
+          'l' --- LOAD GAME
+          'q' --- QUIT
      }
      input = gets.chomp.strip.downcase
      case input
@@ -48,7 +48,12 @@ class Hangman
    end
 
   def random_word
-    File.readlines("5desk.txt").sample.strip.upcase
+    word = File.readlines("5desk.txt").sample.strip.upcase
+    if word.length >= 5 && word.length <= 12
+      return word
+    else
+      random_word
+    end
   end
 
   def show_board
@@ -96,11 +101,11 @@ class Hangman
     if @random_word.split('').all? {|char| @user_guesses.include? char}
       puts "Congrats YOU WIN!"
       puts "correct word: #{@random_word}"
-      exit
+      game_menu
     elsif @guesses_left == 0
       puts "correct word: #{@random_word}"
       puts "You have run out of guesses, GAME OVER."
-      exit
+      game_menu
     end
   end
 
