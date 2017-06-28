@@ -2,10 +2,8 @@ class Hangman
 
   require_relative "hangman_variants"
 
-  attr_accessor( :random_word)
-
   def initialize
-    @random_word = random_word
+    @random_word = nil
     @user_guesses = []
     @guesses_left = 6
   end
@@ -39,6 +37,9 @@ class Hangman
    end
 
    def play_game
+     @random_word = random_word
+     @user_guesses = []
+     @guesses_left = 6
      loop do
        show_board
        player_guess
