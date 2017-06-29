@@ -124,25 +124,6 @@ class Hangman
     end
   end
 
-  def answer_check(user_input)
-    case user_input
-    when'SAVE'
-      save_game
-    when 'QUIT'
-      exit
-    when 'MENU'
-      game_menu
-    when letter.length > 1
-      puts "That answer is more than one character! Try again:"
-      player_guess
-    when @user_guesses.include?(letter)
-      puts "That letter has already been used! Try again:"
-      player_guess
-    else
-      return true
-    end
-  end
-
   def guesses_left(letter)
     unless @random_word.include? letter
       @guesses_left -= 1
