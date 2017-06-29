@@ -101,7 +101,7 @@ class Hangman
   end
 
   def player_guess
-    puts "Pick a letter (guesses left: #{@guesses_left})    {type 'save' to save | 'quit' to quit game}"
+    puts "Pick a letter (guesses left: #{@guesses_left})    {type 'save' to save | 'quit' to quit game | 'menu' for main menu}"
     letter = gets.chomp.strip.upcase
     until answer_check(letter)
       letter = gets.chomp.strip.upcase
@@ -116,6 +116,8 @@ class Hangman
       save_game
     when 'QUIT'
       exit
+    when 'MENU'
+      game_menu
     when letter.length > 1
       puts "That answer is more than one character! Try again:"
       return false
