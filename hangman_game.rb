@@ -1,6 +1,9 @@
 class Hangman
 
-  require_relative "round_variants"
+  require_relative 'round_variants'
+  require 'yaml'
+
+  attr_accessor :random_word, :user_guesses, :guesses_left
 
   def initialize
     @random_word = nil
@@ -24,6 +27,9 @@ class Hangman
      end
      case input
      when 'n'
+       @random_word = random_word
+       @user_guesses = []
+       @guesses_left = 6
        play_game
      when 'l'
        load_game
@@ -34,17 +40,36 @@ class Hangman
    end
 
    def load_game
-     exit
+     puts ""
+     puts "Saved Files:"
+     Dir["saves/*"].each_with_index {|file, i| puts "#{i+1}) #{file[6..-1]}"}
+     puts "Enter the name of your saved game:"
+     file_name = gets.chomp.strip
+     if !File.exist?("saves/#{file_name}") || file_name == ''
+       game_menu
+     else
+       file = YAML.load_file("saves/#{file_name}")
+       @random_word = file[:random_word]
+       @user_guesses = file[:user_guesses]
+       @guesses_left = file[:guesses_left]
+       File.delete("saves/#{file_name}")
+       play_game
+     end
    end
 
    def save_game
+     puts "Save file as (name):"
+     file_name = gets.chomp.strip
+     yaml = YAML.dump({
+       random_word: @random_word,
+       user_guesses: @user_guesses,
+       guesses_left: @guesses_left
+       })
+     File.open("saves/#{file_name}", "w") {|save| save.write(yaml)}
      exit
    end
 
    def play_game
-     @random_word = random_word
-     @user_guesses = []
-     @guesses_left = 6
      display_hangman(@guesses_left)
      loop do
        show_board
@@ -86,12 +111,13 @@ class Hangman
   end
 
   def answer_check(letter)
-    if letter == 'SAVE'
+    case letter
+    when'SAVE'
       save_game
-    elsif letter.length > 1
+    when letter.length > 1
       puts "That answer is more than one character! Try again:"
       return false
-    elsif @user_guesses.include?(letter)
+    when @user_guesses.include?(letter)
       puts "That letter has already been used! Try again:"
       return false
     else
