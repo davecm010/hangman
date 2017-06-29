@@ -1,6 +1,6 @@
 class Hangman
 
-  require_relative "hangman_variants"
+  require_relative "round_variants"
 
   def initialize
     @random_word = nil
@@ -17,7 +17,11 @@ class Hangman
           'l' --- LOAD GAME
           'q' --- QUIT
      }
-     input = gets.chomp.strip.downcase
+     input = nil
+     until ['n','l','q'].include? input
+       puts "please type either 'n', 'l', or 'q':"
+       input = gets.chomp.strip.downcase
+     end 
      case input
      when 'n'
        play_game
