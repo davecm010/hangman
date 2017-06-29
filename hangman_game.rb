@@ -66,7 +66,7 @@ class Hangman
        guesses_left: @guesses_left
        })
      File.open("saves/#{file_name}", "w") {|save| save.write(yaml)}
-     exit
+     game_menu
    end
 
    def play_game
@@ -101,7 +101,7 @@ class Hangman
   end
 
   def player_guess
-    puts "Pick a letter (guesses left: #{@guesses_left})    {type 'save' to save and quit game}"
+    puts "Pick a letter (guesses left: #{@guesses_left})    {type 'save' to save | 'quit' to quit game}"
     letter = gets.chomp.strip.upcase
     until answer_check(letter)
       letter = gets.chomp.strip.upcase
@@ -114,6 +114,8 @@ class Hangman
     case letter
     when'SAVE'
       save_game
+    when 'QUIT'
+      exit
     when letter.length > 1
       puts "That answer is more than one character! Try again:"
       return false
