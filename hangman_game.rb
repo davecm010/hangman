@@ -3,8 +3,6 @@ class Hangman
   require_relative 'round_variants'
   require 'yaml'
 
-  attr_accessor :random_word, :user_guesses, :guesses_left
-
   def initialize
     @random_word = nil
     @user_guesses = []
@@ -102,16 +100,32 @@ class Hangman
 
   def player_guess
     puts "Pick a letter (guesses left: #{@guesses_left})    {type 'save' to save | 'quit' to quit game | 'menu' for main menu}"
-    letter = gets.chomp.strip.upcase
-    until answer_check(letter)
-      letter = gets.chomp.strip.upcase
-    end
-    @user_guesses << letter
-    guess_check(letter)
+    answer_options
   end
 
-  def answer_check(letter)
-    case letter
+  def answer_options
+    user_input = gets.chomp.strip.upcase
+    if user_input == 'SAVE'
+      save_game
+    elsif user_input == 'QUIT'
+      exit
+    elsif user_input == 'MENU'
+      game_menu
+    elsif user_input.length > 1
+      puts "That answer is more than one character! Try again:"
+      answer_options
+    elsif
+      @user_guesses.include?(user_input)
+      puts "That letter has already been used! Try again:"
+      answer_options
+    else
+      @user_guesses << user_input
+      guesses_left(user_input)
+    end
+  end
+
+  def answer_check(user_input)
+    case user_input
     when'SAVE'
       save_game
     when 'QUIT'
@@ -120,16 +134,16 @@ class Hangman
       game_menu
     when letter.length > 1
       puts "That answer is more than one character! Try again:"
-      return false
+      player_guess
     when @user_guesses.include?(letter)
       puts "That letter has already been used! Try again:"
-      return false
+      player_guess
     else
       return true
     end
   end
 
-  def guess_check(letter)
+  def guesses_left(letter)
     unless @random_word.include? letter
       @guesses_left -= 1
     end
