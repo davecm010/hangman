@@ -21,7 +21,7 @@ class Hangman
      until ['n','l','q'].include? input
        puts "please type either 'n', 'l', or 'q':"
        input = gets.chomp.strip.downcase
-     end 
+     end
      case input
      when 'n'
        play_game
@@ -45,6 +45,7 @@ class Hangman
      @random_word = random_word
      @user_guesses = []
      @guesses_left = 6
+     display_hangman(@guesses_left)
      loop do
        show_board
        player_guess
@@ -70,7 +71,8 @@ class Hangman
         print " _ "
       end
     end
-    puts ''
+    puts %{
+            }
   end
 
   def player_guess
